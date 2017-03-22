@@ -17,6 +17,8 @@ namespace XamarinPrismSample
         protected override void RegisterTypes()
         {
             Container.RegisterTypeForNavigation<MainPage>();
+            Container.RegisterTypeForNavigation<Page1>();
+            Container.RegisterTypeForNavigation<Page2>();
         }
     }
 }

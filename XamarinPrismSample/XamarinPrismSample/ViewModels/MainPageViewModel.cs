@@ -42,15 +42,29 @@ namespace XamarinPrismSample.ViewModels
 
         public DelegateCommand<string> ShowSomething { get; private set; }
 
+        public DelegateCommand NavigateCommand { get; private set; }
+
         private void ShowHelloWorld(string param)
         {
             Greeting = "Hello World";
             ButtonName = param;
         }
 
-        public MainPageViewModel()
+        INavigationService _navigationService;
+
+        public MainPageViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             ShowSomething = new DelegateCommand<string>(ShowHelloWorld, CanExecute).ObservesProperty(() => Name);
+            NavigateCommand = new DelegateCommand(Navigate);
+        }
+
+        public void Navigate()
+        {
+            var param = new NavigationParameters();
+            param.Add("name", Name);
+
+            _navigationService.NavigateAsync("Page1",param);
         }
 
         public bool CanExecute(string param)
