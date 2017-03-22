@@ -1,0 +1,72 @@
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace XamarinPrismSample.ViewModels
+{
+    public class MainPageViewModel : BindableBase, INavigationAware
+    {
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
+        }
+
+        private string _greeting;
+        public string Greeting
+        {
+            get { return _greeting; }
+            set { SetProperty(ref _greeting, value); }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                SetProperty(ref _name, value);
+            }
+        }
+
+        private string _buttonName = "CLICK ME";
+        public string ButtonName
+        {
+            get { return _buttonName; }
+            set { SetProperty(ref _buttonName, value); }
+        }
+
+        public DelegateCommand<string> ShowSomething { get; private set; }
+
+        private void ShowHelloWorld(string param)
+        {
+            Greeting = "Hello World";
+            ButtonName = param;
+        }
+
+        public MainPageViewModel()
+        {
+            ShowSomething = new DelegateCommand<string>(ShowHelloWorld, CanExecute).ObservesProperty(() => Name);
+        }
+
+        public bool CanExecute(string param)
+        {
+            return (!string.IsNullOrEmpty(Name));
+        }
+
+        public void OnNavigatedFrom(NavigationParameters parameters)
+        {
+
+        }
+
+        public void OnNavigatedTo(NavigationParameters parameters)
+        {
+            if (parameters.ContainsKey("title"))
+                Title = (string)parameters["title"] + " and Prism";
+        }
+    }
+}
